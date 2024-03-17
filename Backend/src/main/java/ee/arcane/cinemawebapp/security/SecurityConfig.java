@@ -3,6 +3,7 @@ package ee.arcane.cinemawebapp.security;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -25,7 +26,9 @@ public class SecurityConfig {
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .anyRequest().permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/account").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/account").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
