@@ -19,7 +19,7 @@ public class AccountService {
     private final PasswordEncoder passwordEncoder;
 
     public ResponseEntity<String> registerAccount(RegistrationDto data) {
-        if (userRepository.existsByEmail(data.getEmail()) || userRepository.existsByUsername(data.getUsername())) {
+        if (userRepository.existsByEmail(data.getEmail()) || userRepository.existsByUsernameIgnoreCase(data.getUsername())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Name or email already taken");
         }
 
