@@ -28,6 +28,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/api/account").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/api/account").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/screening/active").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/screening/reservations").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
