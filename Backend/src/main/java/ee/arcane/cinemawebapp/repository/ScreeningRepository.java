@@ -8,6 +8,6 @@ import java.util.List;
 public interface ScreeningRepository extends JpaRepository<Screening, Integer> {
 
     List<Screening> findAllByDateStartAfter(ZonedDateTime dateStart);
-    Screening findByScreeningID(Integer screeningID);
+    Screening findByScreeningId(Integer screeningId);
 
 }

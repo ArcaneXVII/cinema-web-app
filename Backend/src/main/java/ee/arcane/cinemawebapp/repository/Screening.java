@@ -15,7 +15,7 @@ public class Screening {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id @Setter(AccessLevel.PROTECTED)
     @Column(name = "screening_id")
-    private Integer screeningID;
+    private Integer screeningId;
 
     private String movie;
 

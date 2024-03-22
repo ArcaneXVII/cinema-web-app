@@ -1,6 +1,7 @@
 package ee.arcane.cinemawebapp.controller;
 
 
+import ee.arcane.cinemawebapp.dto.ReserveDto;
 import ee.arcane.cinemawebapp.repository.Reservation;
 import ee.arcane.cinemawebapp.repository.Screening;
 import ee.arcane.cinemawebapp.service.ScreeningService;
@@ -25,5 +26,10 @@ public class ScreeningController {
     @GetMapping(path = "/screening/reservations")
     public ResponseEntity<List<Reservation>> findScreeningReservations(@RequestParam("id") Integer screeningId) {
         return screeningService.findScreeningReservations(screeningId);
+    }
+
+    @PostMapping(path = "/screening/reservation")
+    public ResponseEntity<String> reserveScreeningSeat(@RequestBody ReserveDto data) {
+        return screeningService.reserveScreeningSeat(data);
     }
 }
