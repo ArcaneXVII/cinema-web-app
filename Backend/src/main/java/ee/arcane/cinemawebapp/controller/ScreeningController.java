@@ -32,4 +32,9 @@ public class ScreeningController {
     public ResponseEntity<String> reserveScreeningSeat(@RequestBody ReserveDto data) {
         return screeningService.reserveScreeningSeat(data);
     }
+
+    @DeleteMapping(path = "/screening/reservation")
+    public ResponseEntity<String> cancelScreeningReservation(@RequestParam("id") Integer screeningId) {
+        return screeningService.cancelScreeningReservation(screeningId);
+    }
 }

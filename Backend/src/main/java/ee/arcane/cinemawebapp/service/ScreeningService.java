@@ -28,7 +28,7 @@ public class ScreeningService {
     }
 
     public ResponseEntity<String> reserveScreeningSeat(ReserveDto data) {
-        if (!reservationRepository.existsByScreeningId(data.getScreeningId())) {
+        if (!screeningRepository.existsByScreeningId(data.getScreeningId())) {
             return ResponseEntity.badRequest().body("Screening does not exist");
         }
         if (reservationRepository.existsByScreeningIdAndSeatRowAndSeatNumber(data.getScreeningId(), data.getSeatRow(), data.getSeatNumber())) {
@@ -43,5 +43,14 @@ public class ScreeningService {
         reservation.setSeatRow(data.getSeatRow());
         reservationRepository.save(reservation);
         return ResponseEntity.ok("Reservation successful");
+    }
+
+    public ResponseEntity<String> cancelScreeningReservation(Integer screeningId) {
+        Integer userId = Integer.valueOf((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        if (!reservationRepository.existsByScreeningIdAndUserId(screeningId, userId)) {
+            return ResponseEntity.badRequest().body("No reservations for this screening found.");
+        }
+        reservationRepository.deleteByScreeningIdAndUserId(screeningId, userId);
+        return ResponseEntity.ok("Reservation cancelled");
     }
 }

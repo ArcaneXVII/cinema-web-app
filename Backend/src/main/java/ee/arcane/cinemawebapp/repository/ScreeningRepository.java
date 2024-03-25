@@ -9,5 +9,5 @@ public interface ScreeningRepository extends JpaRepository<Screening, Integer> {
 
     List<Screening> findAllByDateStartAfter(ZonedDateTime dateStart);
     Screening findByScreeningId(Integer screeningId);
-
+    boolean existsByScreeningId(Integer screeningId);
 }
