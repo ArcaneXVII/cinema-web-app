@@ -1,5 +1,6 @@
 package ee.arcane.cinemawebapp.service;
 
+import ee.arcane.cinemawebapp.dto.ReservationDto;
 import ee.arcane.cinemawebapp.dto.ReserveDto;
 import ee.arcane.cinemawebapp.repository.Reservation;
 import ee.arcane.cinemawebapp.repository.ReservationRepository;
@@ -11,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,8 +25,18 @@ public class ScreeningService {
         return ResponseEntity.ok(screeningRepository.findAllByDateStartAfter(ZonedDateTime.now()));
     }
 
-    public ResponseEntity<List<Reservation>> findScreeningReservations(Integer screeningId) {
-        return ResponseEntity.ok(reservationRepository.findAllByScreeningId(screeningId));
+    public ResponseEntity<List<ReservationDto>> findScreeningReservations(Integer screeningId) {
+        List<Reservation> reservations = reservationRepository.findAllByScreeningId(screeningId);
+        // Convert objects to DTOs. Could be converted to a mapper in the future.
+        List<ReservationDto> reservationDtos = new ArrayList<>();
+        for (Reservation reservation : reservations) {
+            ReservationDto reservationDto = new ReservationDto();
+            reservationDto.setScreeningId(reservation.getScreeningId());
+            reservationDto.setSeatRow(reservation.getSeatRow());
+            reservationDto.setSeatNumber(reservation.getSeatNumber());
+            reservationDtos.add(reservationDto);
+        }
+        return ResponseEntity.ok(reservationDtos);
     }
 
     public ResponseEntity<String> reserveScreeningSeat(ReserveDto data) {
