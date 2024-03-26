@@ -1,5 +1,6 @@
 package ee.arcane.cinemawebapp.repository;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -18,14 +19,19 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "reservation_id")
-    private Integer reservationID;
+    private Integer reservationId;
 
+    @Column(name = "screening_id")
+    private Integer screeningId;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "screening_id", referencedColumnName = "screening_id",insertable = false, updatable = false)
     private Screening screening;
 
+    @Column(name = "user_id")
+    private Integer userId;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id",insertable = false, updatable = false)
+    @JsonIgnoreProperties({"user_id", "password", "email"})
     private User user;
 
     @Min(value = 1, message = "Seat row must be between 1 and 10")

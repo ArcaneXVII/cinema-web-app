@@ -3,7 +3,7 @@ package ee.arcane.cinemawebapp.repository;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
+import java.time.ZonedDateTime;
 
 @Table(name = "screenings")
 @Entity
@@ -15,7 +15,7 @@ public class Screening {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id @Setter(AccessLevel.PROTECTED)
     @Column(name = "screening_id")
-    private Integer screeningID;
+    private Integer screeningId;
 
     private String movie;
 
@@ -28,8 +28,8 @@ public class Screening {
     private String filmRating;
 
     @Column(name = "date_start")
-    private Date dateStart;
+    private ZonedDateTime dateStart;
 
     @Column(name = "date_end")
-    private Date dateEnd;
+    private ZonedDateTime dateEnd;
 }
