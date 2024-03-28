@@ -2,10 +2,12 @@ package ee.arcane.cinemawebapp.service;
 
 import ee.arcane.cinemawebapp.dto.ReservationDto;
 import ee.arcane.cinemawebapp.dto.ReserveDto;
+import ee.arcane.cinemawebapp.dto.SeatRecommendationDto;
 import ee.arcane.cinemawebapp.repository.Reservation;
 import ee.arcane.cinemawebapp.repository.ReservationRepository;
 import ee.arcane.cinemawebapp.repository.Screening;
 import ee.arcane.cinemawebapp.repository.ScreeningRepository;
+import ee.arcane.cinemawebapp.utility.SeatReservationUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,7 +29,7 @@ public class ScreeningService {
 
     public ResponseEntity<List<ReservationDto>> findScreeningReservations(Integer screeningId) {
         List<Reservation> reservations = reservationRepository.findAllByScreeningId(screeningId);
-        // Convert objects to DTOs. Could be converted to a mapper in the future.
+        // Convert objects to DTOs. Could be done with a mapper instead.
         List<ReservationDto> reservationDtos = new ArrayList<>();
         for (Reservation reservation : reservations) {
             ReservationDto reservationDto = new ReservationDto();
@@ -37,6 +39,19 @@ public class ScreeningService {
             reservationDtos.add(reservationDto);
         }
         return ResponseEntity.ok(reservationDtos);
+    }
+
+    public ResponseEntity<SeatRecommendationDto> findScreeningSeatRecommendation(Integer screeningId, Integer seatAmount) {
+        List<Reservation> reservations = reservationRepository.findAllByScreeningId(screeningId);
+        SeatReservationUtility seatReservationUtility = new SeatReservationUtility();
+        for (Reservation reservation : reservations) {
+            seatReservationUtility.setSeatReserved(reservation.getSeatRow(), reservation.getSeatNumber());
+        }
+        List<List<Integer>> recommendedSeats = seatReservationUtility.getSeatRecommendation(seatAmount);
+        SeatRecommendationDto seatRecommendationDto = new SeatRecommendationDto();
+        seatRecommendationDto.setRecommendedSeats(recommendedSeats);
+
+        return ResponseEntity.ok(seatRecommendationDto);
     }
 
     public ResponseEntity<String> reserveScreeningSeat(ReserveDto data) {

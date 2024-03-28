@@ -3,6 +3,7 @@ package ee.arcane.cinemawebapp.controller;
 
 import ee.arcane.cinemawebapp.dto.ReservationDto;
 import ee.arcane.cinemawebapp.dto.ReserveDto;
+import ee.arcane.cinemawebapp.dto.SeatRecommendationDto;
 import ee.arcane.cinemawebapp.repository.Screening;
 import ee.arcane.cinemawebapp.service.ScreeningService;
 import lombok.RequiredArgsConstructor;
@@ -36,5 +37,10 @@ public class ScreeningController {
     @DeleteMapping(path = "/screening/reservation")
     public ResponseEntity<String> cancelScreeningReservation(@RequestParam("id") Integer screeningId) {
         return screeningService.cancelScreeningReservation(screeningId);
+    }
+
+    @GetMapping(path = "/screening/reservation/recommendation")
+    public ResponseEntity<SeatRecommendationDto> findScreeningSeatRecommendation(@RequestParam("id") Integer screeningId, @RequestParam("seats") Integer seatAmount) {
+        return screeningService.findScreeningSeatRecommendation(screeningId, seatAmount);
     }
 }
