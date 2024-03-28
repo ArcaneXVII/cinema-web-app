@@ -30,6 +30,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/api/account").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/screening/active").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/screening/reservations").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/screening/reservation/recommendation").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/screening/populate").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);

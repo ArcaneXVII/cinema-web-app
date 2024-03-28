@@ -35,7 +35,7 @@ public class AccountService {
     public ResponseEntity<String> login(LoginDto data) {
         User user = userRepository.findByEmail(data.getEmail());
         if (user != null && passwordEncoder.matches(data.getPassword(), user.getPassword())) {
-            String jwt = JwtTokenProvider.generateToken(user.getEmail());
+            String jwt = JwtTokenProvider.generateToken(user.getUserID().toString());
             return ResponseEntity.ok().body(jwt);
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");

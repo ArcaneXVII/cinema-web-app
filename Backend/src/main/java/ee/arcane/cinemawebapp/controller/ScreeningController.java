@@ -43,4 +43,9 @@ public class ScreeningController {
     public ResponseEntity<SeatRecommendationDto> findScreeningSeatRecommendation(@RequestParam("id") Integer screeningId, @RequestParam("seats") Integer seatAmount) {
         return screeningService.findScreeningSeatRecommendation(screeningId, seatAmount);
     }
+
+    @GetMapping(path = "/screening/populate")
+    public void populateScreeningReservations(@RequestParam("id") Integer screeningId) {
+        screeningService.populateScreeningReservations(screeningId);
+    }
 }

@@ -9,6 +9,8 @@ import ee.arcane.cinemawebapp.repository.Screening;
 import ee.arcane.cinemawebapp.repository.ScreeningRepository;
 import ee.arcane.cinemawebapp.utility.SeatReservationUtility;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -16,15 +18,19 @@ import org.springframework.stereotype.Service;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
 public class ScreeningService {
     private final ScreeningRepository screeningRepository;
     private final ReservationRepository reservationRepository;
+    private Random random = new Random();
 
     public ResponseEntity<List<Screening>> findActiveScreenings() {
-        return ResponseEntity.ok(screeningRepository.findAllByDateStartAfter(ZonedDateTime.now()));
+        Specification<Screening> spec = (root, query, cb) -> cb.greaterThan(root.get("dateStart"), ZonedDateTime.now());
+        Sort sort = Sort.by(Sort.Direction.ASC, "dateStart");
+        return ResponseEntity.ok(screeningRepository.findAll(spec, sort));
     }
 
     public ResponseEntity<List<ReservationDto>> findScreeningReservations(Integer screeningId) {
@@ -61,6 +67,9 @@ public class ScreeningService {
         if (reservationRepository.existsByScreeningIdAndSeatRowAndSeatNumber(data.getScreeningId(), data.getSeatRow(), data.getSeatNumber())) {
             return ResponseEntity.badRequest().body("Seat is already reserved");
         }
+        if (data.getSeatNumber() == null || data.getSeatRow() == null) {
+            return ResponseEntity.badRequest().body("Seat number or row not provided");
+        }
         Reservation reservation = new Reservation();
         Integer userId = Integer.valueOf((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 
@@ -70,6 +79,22 @@ public class ScreeningService {
         reservation.setSeatRow(data.getSeatRow());
         reservationRepository.save(reservation);
         return ResponseEntity.ok("Reservation successful");
+    }
+
+    public void populateScreeningReservations(Integer screeningId) {
+        for (int row = 2; row < 10; row++) {
+            for (int amount = 0; amount < random.nextInt(9) + 4; amount++) {
+                int seat = random.nextInt(14) + 2;
+                if (reservationRepository.existsByScreeningIdAndSeatRowAndSeatNumber(screeningId, row, seat + 1)) {
+                    continue;
+                }
+                Reservation reservation = new Reservation();
+                reservation.setScreeningId(screeningId);
+                reservation.setSeatRow(row);
+                reservation.setSeatNumber(seat);
+                reservationRepository.save(reservation);
+            }
+        }
     }
 
     public ResponseEntity<String> cancelScreeningReservation(Integer screeningId) {
