@@ -46,7 +46,7 @@ A postgreSQL database docker container must be set up
 docker-compose up -d
 ```
 
-For the Spring application, it's easiest to run the `CinemaWebAppApplication.java` in either your preffered IDE or:
+For the Spring application, it's easiest to run the `CinemaWebAppApplication.java` in your preffered IDE or:
 
 Build the backend application and execute the built .jar file
 ```bash
