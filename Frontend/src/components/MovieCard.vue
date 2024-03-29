@@ -71,7 +71,7 @@ defineProps(['screeningId', 'movie', 'genre', 'language', 'filmRating', 'dateSta
       >
         <v-card
           class="bg-grey-darken-4"
-          style="width: 70rem; height: 60rem; max-width: 90vw; max-height: 80vh;"
+          style="width: 70rem; height: 40rem; max-width: 90vw; max-height: 80vh;"
         >
           <v-container
             class="mt-10"
@@ -129,6 +129,13 @@ defineProps(['screeningId', 'movie', 'genre', 'language', 'filmRating', 'dateSta
                 >
                   Reserve seats
                 </v-btn>
+                <v-btn
+                  class="ml-3"
+                  @click="cancelReservations()"
+                  color="red"
+                >
+                  Cancel reservations
+                </v-btn>
               </v-container>
             </v-row>
           </v-container>
@@ -167,6 +174,7 @@ export default {
       this.formattedDate = `${day}.${month}`
     },
     async getReservedSeats() {
+      this.reservedSeats.clear();
       await axios.get(`/api/screening/reservations?id=${this.screeningId}`)
         .then(response => {
           for (const reservation of response.data) {
@@ -223,6 +231,20 @@ export default {
             });
         }
       }
+      this.getReservedSeats();
+    },
+    async cancelReservations() {
+      if (localStorage.getItem('user-token') === null) {
+        this.overlay = false;
+        router.push('/login');
+        return;
+      }
+      await axios.delete('/api/screening/reservation?id=' + this.screeningId)
+        .then(response => {
+          if (response.status !== 200) {
+            alert('Something went wrong while canceling reservations')
+          }
+        });
       this.getReservedSeats();
     },
     seatStatus(row, col) {

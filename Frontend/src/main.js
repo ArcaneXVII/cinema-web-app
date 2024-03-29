@@ -20,11 +20,16 @@ const vuetify = createVuetify({
 })
 
 axios.defaults.baseURL = 'http://localhost:8080/'
-const token = localStorage.getItem('user-token')
 
-if (token) {
-  axios.defaults.headers.common['Authorization'] = "Bearer " + token
-}
+axios.interceptors.request.use((config) => {
+  const token = localStorage.getItem('user-token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+}, (error) => {
+  return Promise.reject(error);
+});
 
 const app = createApp(App)
 
