@@ -29,13 +29,12 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         // Retrieve token from request
-        String header = request.getHeader("Authorization");
-        if (header == null || !header.startsWith("Bearer ")) {
+        String token = request.getHeader("Authorization");
+        if (token == null || !token.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
-
-        Claims tokenBody = parseToken(header);
+        Claims tokenBody = parseToken(token.substring(7));
 
         // Set authentication
         UsernamePasswordAuthenticationToken authentication = buildAuthToken(tokenBody);

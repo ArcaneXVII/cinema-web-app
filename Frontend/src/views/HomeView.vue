@@ -1,9 +1,9 @@
 <script setup>
-import TheWelcome from '../components/TheWelcome.vue'
+  import Header from '@/components/Header.vue'
+import ScreeningList from '@/components/ScreeningList.vue'
 </script>
 
 <template>
-  <main>
-    <TheWelcome />
-  </main>
+  <Header />
+  <ScreeningList />
 </template>
