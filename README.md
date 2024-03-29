@@ -55,9 +55,10 @@ Build the backend application and execute the built .jar file
 
 ### Running the Frontend
 
-To run the frontend locally, navigate to the `Frontend` directory and run the following command:
+To run the frontend locally, navigate to the `Frontend` directory and run the following commands:
 
 ```bash
+npm install
 npm run dev
 ```
 
