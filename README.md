@@ -82,4 +82,4 @@ npm install
 npm run build
 ```
 
-## Detailed guide to navigating the web application is in the Wiki.
+**Detailed guide to navigating the web application can be found in the [Wiki](https://github.com/ArcaneXVII/cinema-web-app/wiki).**
