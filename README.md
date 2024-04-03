@@ -3,6 +3,8 @@ This project is a basic web application for a cinema. The app provides a clean i
 
 It is built using Spring Boot, Vue, PostreSQL.
 
+![](demo_seat_reservation.png)
+
 ## Feedback
 Any constructive feedback is greatly appreciated, as I'm always looking for ways to improve my projects and programming knowledge. Thank you!
 
