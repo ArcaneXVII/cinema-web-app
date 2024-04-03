@@ -140,6 +140,11 @@ defineProps(['screeningId', 'movie', 'genre', 'language', 'filmRating', 'dateSta
             </v-row>
           </v-container>
         </v-card>
+        <v-icon
+            icon="mdi-close"
+            class="close-btn"
+            @click="overlay = !overlay"
+        />
       </v-overlay>
     </v-row>
 
@@ -261,3 +266,16 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  transition: 0.3s;
+}
+
+.close-btn:hover {
+  color: white;
+}
+</style>
