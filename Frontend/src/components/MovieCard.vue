@@ -78,9 +78,16 @@ defineProps(['screeningId', 'movie', 'genre', 'language', 'filmRating', 'dateSta
             style="max-width: 720px; width: 80rem"
           >
             <v-row
-              class="ma-0 pa-0"
+              class="ma-0 pa-0 hover-row"
               v-for="row in Array.from({ length: 10 }, (_, i) => i + 1).reverse()" :key="row"
             >
+              <v-btn
+                  class="mr-2 row-number"
+                  variant="plain"
+                  disabled
+              >
+                {{ row }}
+              </v-btn>
               <v-col
                 class="mb-2 pa-0"
                 v-for="col in 18"
@@ -277,5 +284,16 @@ export default {
 
 .close-btn:hover {
   color: white;
+}
+
+.row-number {
+  opacity: 40%;
+  transition: 0.5s;
+  width: 2rem;
+  min-width: 20px
+}
+
+.hover-row:hover > .row-number {
+  opacity: 100%;
 }
 </style>
